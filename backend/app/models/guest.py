@@ -1,4 +1,6 @@
-from sqlalchemy import String, Text, Boolean, ForeignKey, Enum as SAEnum
+from datetime import datetime
+
+from sqlalchemy import String, Text, Boolean, Integer, DateTime, ForeignKey, Enum as SAEnum
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
@@ -30,5 +32,10 @@ class Guest(Base):
         default=AgeGroup.ADULT,
         nullable=False,
     )
+    number_of_persons: Mapped[int | None] = mapped_column(Integer, default=1, nullable=True)
+    room_number: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    floor: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    arrival_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    departure_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     is_vip: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)

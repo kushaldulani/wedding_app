@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import EmailStr, Field
 
 from app.schemas.base import BaseSchema, BaseResponseSchema
@@ -14,6 +16,11 @@ class GuestCreate(BaseSchema):
     family_group_id: int | None = None
     dietary_preference_id: int | None = None
     age_group: AgeGroup = AgeGroup.ADULT
+    number_of_persons: int | None = 1
+    room_number: str | None = None
+    floor: str | None = None
+    arrival_at: datetime | None = None
+    departure_at: datetime | None = None
     notes: str | None = None
     is_vip: bool = False
 
@@ -28,6 +35,11 @@ class GuestUpdate(BaseSchema):
     family_group_id: int | None = None
     dietary_preference_id: int | None = None
     age_group: AgeGroup | None = None
+    number_of_persons: int | None = None
+    room_number: str | None = None
+    floor: str | None = None
+    arrival_at: datetime | None = None
+    departure_at: datetime | None = None
     notes: str | None = None
     is_vip: bool | None = None
 
@@ -42,6 +54,11 @@ class GuestResponse(BaseResponseSchema):
     family_group_id: int | None
     dietary_preference_id: int | None
     age_group: AgeGroup
+    number_of_persons: int | None
+    room_number: str | None
+    floor: str | None
+    arrival_at: datetime | None
+    departure_at: datetime | None
     notes: str | None
     is_vip: bool
 

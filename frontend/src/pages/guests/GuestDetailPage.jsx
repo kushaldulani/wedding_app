@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Edit, Trash2, Phone, Mail, Star, Users as UsersIcon } from 'lucide-react'
+import { Edit, Trash2, Phone, Mail, Star, Users as UsersIcon, DoorOpen, Building, Calendar } from 'lucide-react'
 import PageHeader from '../../components/PageHeader'
 import LoadingScreen from '../../components/LoadingScreen'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import { useGuest, useDeleteGuest } from '../../hooks/useGuests'
-import { getInitials } from '../../lib/utils'
+import { getInitials, formatDateTime } from '../../lib/utils'
 
 function InfoRow({ icon: Icon, label, value }) {
   return (
@@ -71,6 +71,11 @@ export default function GuestDetailPage() {
           <InfoRow icon={Mail} label="Email" value={guest.email} />
           <InfoRow icon={UsersIcon} label="Family Group" value={guest.family_group_name} />
           <InfoRow icon={UsersIcon} label="Age Group" value={guest.age_group} />
+          <InfoRow icon={UsersIcon} label="No. of Persons" value={guest.number_of_persons} />
+          <InfoRow icon={DoorOpen} label="Room Number" value={guest.room_number} />
+          <InfoRow icon={Building} label="Floor" value={guest.floor} />
+          <InfoRow icon={Calendar} label="Arrival" value={guest.arrival_at && formatDateTime(guest.arrival_at)} />
+          <InfoRow icon={Calendar} label="Departure" value={guest.departure_at && formatDateTime(guest.departure_at)} />
         </div>
 
         {guest.notes && (
