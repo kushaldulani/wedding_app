@@ -9,7 +9,7 @@ export default function AuthLayout() {
   }
 
   return (
-    <div className="min-h-full flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-full flex flex-col items-center justify-center px-6 py-12 safe-top">
       <div className="w-full max-w-sm">
         <Outlet />
       </div>

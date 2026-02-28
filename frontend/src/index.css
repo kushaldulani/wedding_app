@@ -31,13 +31,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Safe area padding for notched devices */
+/* Safe area padding for notched devices / PWA standalone mode */
 .safe-bottom {
   padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 .safe-top {
   padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Sticky headers in standalone PWA need to offset below the status bar */
+@supports (top: env(safe-area-inset-top)) {
+  @media (display-mode: standalone) {
+    .sticky.top-0 {
+      top: env(safe-area-inset-top, 0px);
+    }
+  }
 }
 
 /* Hide scrollbar but keep functionality */
