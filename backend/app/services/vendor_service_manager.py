@@ -43,6 +43,11 @@ class VendorServiceManager:
         return await self.repo.get_all(skip=skip, limit=limit)
 
     async def create_service(self, data: VendorServiceCreate) -> VendorServiceItem:
+        if data.vendor_id:
+            vendor = await self.vendor_repo.get_by_id(data.vendor_id)
+            if not vendor:
+                raise NotFoundException("Vendor not found")
+
         if data.event_id:
             event = await self.event_repo.get_by_id(data.event_id)
             if not event:

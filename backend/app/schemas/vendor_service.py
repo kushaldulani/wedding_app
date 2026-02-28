@@ -10,7 +10,13 @@ from app.models.enums import VendorServiceStatus
 class VendorServiceCreate(BaseSchema):
     title: str = Field(..., min_length=1, max_length=300)
     description: str | None = None
+    vendor_id: int | None = None
     event_id: int | None = None
+    service_date: date | None = None
+    start_time: time | None = None
+    end_time: time | None = None
+    amount: Decimal | None = Field(None, ge=0, max_digits=12, decimal_places=2)
+    status: VendorServiceStatus | None = None
     notes: str | None = None
 
 
