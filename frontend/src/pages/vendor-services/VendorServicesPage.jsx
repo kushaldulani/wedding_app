@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Wrench, Download } from 'lucide-react'
+import { Wrench, Download, Search } from 'lucide-react'
 import PageHeader from '../../components/PageHeader'
 import FloatingButton from '../../components/FloatingButton'
 import LoadingScreen from '../../components/LoadingScreen'
@@ -16,16 +16,35 @@ export default function VendorServicesPage() {
   const navigate = useNavigate()
   const [statusFilter, setStatusFilter] = useState('')
   const [eventFilter, setEventFilter] = useState('')
+  const [search, setSearch] = useState('')
   const [exporting, setExporting] = useState(false)
 
   const { data: eventsData } = useEvents({ page_size: 100 })
   const events = eventsData?.items || eventsData || []
 
-  const params = {}
-  if (statusFilter) params.status = statusFilter
-  if (eventFilter) params.event_id = eventFilter
+  const { data, isLoading } = useVendorServices({ page_size: 1000, refetchOnWindowFocus: true })
 
-  const { data, isLoading } = useVendorServices(params)
+  const allServices = data?.items || data || []
+
+  const filteredServices = useMemo(() => {
+    let result = allServices
+    if (statusFilter) {
+      result = result.filter((s) => s.status === statusFilter)
+    }
+    if (eventFilter) {
+      result = result.filter((s) => String(s.event_id) === eventFilter)
+    }
+    if (search.trim()) {
+      const q = search.trim().toLowerCase()
+      result = result.filter(
+        (s) =>
+          s.title?.toLowerCase().includes(q) ||
+          s.description?.toLowerCase().includes(q) ||
+          s.notes?.toLowerCase().includes(q)
+      )
+    }
+    return result
+  }, [allServices, statusFilter, eventFilter, search])
 
   const handleExport = async () => {
     setExporting(true)
@@ -36,8 +55,6 @@ export default function VendorServicesPage() {
       setExporting(false)
     }
   }
-
-  const services = data?.items || data || []
 
   return (
     <div>
@@ -55,7 +72,20 @@ export default function VendorServicesPage() {
         }
       />
 
-      <div className="px-4 md:px-6 lg:px-8 py-3 flex items-center gap-3">
+      <div className="px-4 md:px-6 lg:px-8 pt-3 pb-2">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search services..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
+      <div className="px-4 md:px-6 lg:px-8 py-2 flex items-center gap-3">
         <div className="flex gap-2 overflow-x-auto flex-1">
           <button
             onClick={() => setStatusFilter('')}
@@ -93,11 +123,11 @@ export default function VendorServicesPage() {
 
       {isLoading ? (
         <LoadingScreen />
-      ) : services.length === 0 ? (
+      ) : filteredServices.length === 0 ? (
         <EmptyState icon={Wrench} title="No vendor services yet" description="Add services needed for your wedding" />
       ) : (
         <div className="px-4 md:px-6 lg:px-8 pb-6 grid grid-cols-1 md:grid-cols-2 gap-2">
-          {services.map((svc) => (
+          {filteredServices.map((svc) => (
             <button
               key={svc.id}
               onClick={() => navigate(`/vendor-services/${svc.id}`)}

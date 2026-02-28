@@ -2,9 +2,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import * as api from '../api/vendor-services'
 
 export function useVendorServices(params) {
+  const { refetchOnWindowFocus, ...queryParams } = params || {}
   return useQuery({
-    queryKey: ['vendor-services', params],
-    queryFn: () => api.getVendorServices(params),
+    queryKey: ['vendor-services', queryParams],
+    queryFn: () => api.getVendorServices(queryParams),
+    refetchOnWindowFocus: refetchOnWindowFocus ?? false,
   })
 }
 
