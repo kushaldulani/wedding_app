@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { Paperclip } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -238,20 +239,29 @@ export default function TaskFormPage() {
         )}
       </form>
 
-      {isEdit && (
-        <div className="px-4 md:px-6 lg:px-8 py-4 space-y-4 max-w-2xl">
-          <h3 className="text-sm font-medium text-slate-700">Attachments</h3>
-          <FileDropzone
-            onUpload={(files) => uploadAttachments.mutateAsync(files)}
-            uploading={uploadAttachments.isPending}
-          />
-          <AttachmentList
-            attachments={attachments}
-            onDelete={(attId) => deleteAttachment.mutate(attId)}
-            deleting={deleteAttachment.isPending}
-          />
+      <div className="px-4 md:px-6 lg:px-8 py-4 space-y-4 max-w-2xl">
+        <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+          <Paperclip className="w-4 h-4 text-slate-500" />
+          <h3 className="text-sm font-semibold text-slate-700">Attachments</h3>
         </div>
-      )}
+        {isEdit ? (
+          <>
+            <FileDropzone
+              onUpload={(files) => uploadAttachments.mutateAsync(files)}
+              uploading={uploadAttachments.isPending}
+            />
+            <AttachmentList
+              attachments={attachments}
+              onDelete={(attId) => deleteAttachment.mutate(attId)}
+              deleting={deleteAttachment.isPending}
+            />
+          </>
+        ) : (
+          <p className="text-xs text-slate-400 bg-slate-50 rounded-xl px-4 py-3">
+            Save the task first to upload attachments.
+          </p>
+        )}
+      </div>
     </div>
   )
 }
