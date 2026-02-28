@@ -18,6 +18,11 @@
   touch-action: manipulation;
 }
 
+html {
+  /* White background ensures bottom safe area behind nav looks clean */
+  background-color: #ffffff;
+}
+
 html, body, #root {
   height: 100%;
   overscroll-behavior: none;
@@ -56,4 +61,10 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Pull-to-refresh spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
