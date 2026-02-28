@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#e11d48"/>
+  <g transform="translate(256,270)">
+    <path d="M0 90C-40 90-140-10-140-90S-80-200-40-200C-10-200 0-180 0-180S10-200 40-200C80-200 140-170 140-90S40 90 0 90Z" fill="white" opacity="0.95"/>
+  </g>
+  <text x="256" y="430" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="80" font-weight="700" fill="white" opacity="0.95">KL</text>
+</svg>
