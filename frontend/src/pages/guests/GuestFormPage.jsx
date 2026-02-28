@@ -74,7 +74,7 @@ export default function GuestFormPage() {
     }
   }
 
-  if (isEdit && isLoading) return <LoadingScreen />
+  if (isEdit && (isLoading || !relationTypes || !familyGroups || !dietaryPrefs)) return <LoadingScreen />
 
   const saving = createGuest.isPending || updateGuest.isPending
   const error = createGuest.error || updateGuest.error

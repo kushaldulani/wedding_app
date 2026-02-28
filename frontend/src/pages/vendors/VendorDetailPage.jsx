@@ -10,18 +10,17 @@ import { useVendorServices } from '../../hooks/useVendorServices'
 import { formatDate, formatCurrency } from '../../lib/utils'
 
 function InfoRow({ icon: Icon, label, value, isLink }) {
-  if (!value) return null
   return (
     <div className="flex items-start gap-3 py-2">
       <Icon className="w-4 h-4 text-slate-400 mt-0.5" />
       <div>
         <p className="text-xs text-slate-400">{label}</p>
-        {isLink ? (
+        {value && isLink ? (
           <a href={value} target="_blank" rel="noopener noreferrer" className="text-sm text-primary-600 break-all">
             {value}
           </a>
         ) : (
-          <p className="text-sm text-slate-700">{value}</p>
+          <p className="text-sm text-slate-700">{value || '-'}</p>
         )}
       </div>
     </div>

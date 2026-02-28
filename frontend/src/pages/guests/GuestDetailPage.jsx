@@ -8,13 +8,12 @@ import { useGuest, useDeleteGuest } from '../../hooks/useGuests'
 import { getInitials } from '../../lib/utils'
 
 function InfoRow({ icon: Icon, label, value }) {
-  if (!value) return null
   return (
     <div className="flex items-start gap-3 py-2">
       <Icon className="w-4 h-4 text-slate-400 mt-0.5" />
       <div>
         <p className="text-xs text-slate-400">{label}</p>
-        <p className="text-sm text-slate-700">{value}</p>
+        <p className="text-sm text-slate-700">{value || '-'}</p>
       </div>
     </div>
   )

@@ -57,7 +57,7 @@ export default function VendorFormPage() {
     }
   }
 
-  if (isEdit && isLoading) return <LoadingScreen />
+  if (isEdit && (isLoading || !categories)) return <LoadingScreen />
   const saving = createVendor.isPending || updateVendor.isPending
   const error = createVendor.error || updateVendor.error
 

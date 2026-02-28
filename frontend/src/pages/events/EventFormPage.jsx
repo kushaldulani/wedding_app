@@ -75,7 +75,7 @@ export default function EventFormPage() {
     }
   }
 
-  if (isEdit && isLoading) return <LoadingScreen />
+  if (isEdit && (isLoading || !eventTypes)) return <LoadingScreen />
 
   const saving = createEvent.isPending || updateEvent.isPending
   const error = createEvent.error || updateEvent.error

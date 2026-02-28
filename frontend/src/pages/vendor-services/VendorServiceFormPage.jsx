@@ -13,12 +13,12 @@ import { VENDOR_SERVICE_STATUSES } from '../../lib/constants'
 const schema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
-  vendor_id: z.coerce.number().optional().nullable(),
-  event_id: z.coerce.number().optional().nullable(),
+  vendor_id: z.string().optional(),
+  event_id: z.string().optional(),
   service_date: z.string().optional(),
   start_time: z.string().optional(),
   end_time: z.string().optional(),
-  amount: z.coerce.number().min(0).optional().nullable(),
+  amount: z.string().optional(),
   status: z.string().optional(),
   notes: z.string().optional(),
 })
@@ -39,20 +39,25 @@ export default function VendorServiceFormPage() {
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: { status: 'pending' },
+    defaultValues: {
+      title: '', description: '', vendor_id: '', event_id: '',
+      service_date: '', start_time: '', end_time: '',
+      amount: '', status: 'pending', notes: '',
+    },
   })
 
   useEffect(() => {
     if (svc) {
       reset({
-        ...svc,
-        service_date: svc.service_date || '',
-        start_time: svc.start_time || '',
-        end_time: svc.end_time || '',
-        amount: svc.amount ?? '',
-        vendor_id: svc.vendor_id ?? '',
-        event_id: svc.event_id ?? '',
+        title: svc.title || '',
         description: svc.description || '',
+        vendor_id: svc.vendor_id != null ? String(svc.vendor_id) : '',
+        event_id: svc.event_id != null ? String(svc.event_id) : '',
+        service_date: svc.service_date ? String(svc.service_date).slice(0, 10) : '',
+        start_time: svc.start_time ? String(svc.start_time).slice(0, 5) : '',
+        end_time: svc.end_time ? String(svc.end_time).slice(0, 5) : '',
+        amount: svc.amount != null ? String(svc.amount) : '',
+        status: svc.status || 'pending',
         notes: svc.notes || '',
       })
     }
@@ -60,14 +65,15 @@ export default function VendorServiceFormPage() {
 
   const onSubmit = (data) => {
     const payload = {
-      ...data,
+      title: data.title,
       description: data.description || null,
-      vendor_id: data.vendor_id || null,
-      event_id: data.event_id || null,
+      vendor_id: data.vendor_id ? Number(data.vendor_id) : null,
+      event_id: data.event_id ? Number(data.event_id) : null,
       service_date: data.service_date || null,
       start_time: data.start_time || null,
       end_time: data.end_time || null,
-      amount: data.amount != null && data.amount !== '' ? Number(data.amount) : null,
+      amount: data.amount !== '' && data.amount != null ? Number(data.amount) : null,
+      status: data.status || 'pending',
       notes: data.notes || null,
     }
 
@@ -78,7 +84,7 @@ export default function VendorServiceFormPage() {
     }
   }
 
-  if (isEdit && isLoading) return <LoadingScreen />
+  if (isEdit && (isLoading || !vendorsData || !eventsData)) return <LoadingScreen />
   const saving = createService.isPending || updateService.isPending
   const error = createService.error || updateService.error
 
@@ -118,7 +124,7 @@ export default function VendorServiceFormPage() {
             <select {...register('vendor_id')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
               <option value="">Unassigned</option>
               {vendors.map((v) => (
-                <option key={v.id} value={v.id}>{v.name}</option>
+                <option key={v.id} value={String(v.id)}>{v.name}</option>
               ))}
             </select>
           </div>
@@ -127,7 +133,7 @@ export default function VendorServiceFormPage() {
             <select {...register('event_id')} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
               <option value="">No event</option>
               {events.map((e) => (
-                <option key={e.id} value={e.id}>{e.name}</option>
+                <option key={e.id} value={String(e.id)}>{e.name}</option>
               ))}
             </select>
           </div>

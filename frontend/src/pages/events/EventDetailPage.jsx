@@ -50,42 +50,35 @@ export default function EventDetailPage() {
       <div className="px-4 md:px-6 lg:px-8 py-4 space-y-4 max-w-2xl">
         <div className="flex items-center gap-2">
           <StatusBadge status={event.status} />
-          {event.event_type_name && (
-            <span className="text-xs text-primary-600 font-medium bg-primary-50 px-2 py-0.5 rounded-full">
-              {event.event_type_name}
-            </span>
-          )}
+          <span className="text-xs text-primary-600 font-medium bg-primary-50 px-2 py-0.5 rounded-full">
+            {event.event_type_name || '-'}
+          </span>
         </div>
 
-        {event.description && (
-          <p className="text-sm text-slate-600">{event.description}</p>
-        )}
+        <p className="text-sm text-slate-600">{event.description || '-'}</p>
 
         <div className="space-y-3 bg-slate-50 rounded-2xl p-4">
           <div className="flex items-center gap-3">
             <Calendar className="w-4 h-4 text-slate-400" />
             <span className="text-sm text-slate-700">{formatDate(event.event_date)}</span>
           </div>
-          {(event.start_time || event.end_time) && (
-            <div className="flex items-center gap-3">
-              <Clock className="w-4 h-4 text-slate-400" />
-              <span className="text-sm text-slate-700">
-                {event.start_time && formatTime(event.start_time)}
-                {event.end_time && ` - ${formatTime(event.end_time)}`}
-              </span>
+          <div className="flex items-center gap-3">
+            <Clock className="w-4 h-4 text-slate-400" />
+            <span className="text-sm text-slate-700">
+              {event.start_time || event.end_time
+                ? `${event.start_time ? formatTime(event.start_time) : ''}${event.end_time ? ` - ${formatTime(event.end_time)}` : ''}`
+                : '-'}
+            </span>
+          </div>
+          <div className="flex items-start gap-3">
+            <MapPin className="w-4 h-4 text-slate-400 mt-0.5" />
+            <div>
+              <p className="text-sm text-slate-700">{event.venue_name || '-'}</p>
+              {event.venue_address && (
+                <p className="text-xs text-slate-500">{event.venue_address}</p>
+              )}
             </div>
-          )}
-          {event.venue_name && (
-            <div className="flex items-start gap-3">
-              <MapPin className="w-4 h-4 text-slate-400 mt-0.5" />
-              <div>
-                <p className="text-sm text-slate-700">{event.venue_name}</p>
-                {event.venue_address && (
-                  <p className="text-xs text-slate-500">{event.venue_address}</p>
-                )}
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
 

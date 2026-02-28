@@ -78,7 +78,7 @@ export default function VendorServicesPage() {
       ) : services.length === 0 ? (
         <EmptyState icon={Wrench} title="No vendor services yet" description="Add services needed for your wedding" />
       ) : (
-        <div className="px-4 md:px-6 lg:px-8 pb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        <div className="px-4 md:px-6 lg:px-8 pb-6 grid grid-cols-1 md:grid-cols-2 gap-2">
           {services.map((svc) => (
             <button
               key={svc.id}
@@ -89,10 +89,10 @@ export default function VendorServicesPage() {
                 <Wrench className="w-5 h-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{svc.title}</p>
-                <p className="text-xs text-slate-500 truncate">
+                <p className="text-sm font-medium text-slate-900">{svc.title}</p>
+                <p className="text-xs text-slate-500">
                   {svc.service_date ? formatDate(svc.service_date) : 'No date set'}
-                  {svc.amount != null && ` · ${formatCurrency(svc.amount)}`}
+                  {svc.amount != null && svc.amount !== 0 && ` · ${formatCurrency(svc.amount)}`}
                 </p>
               </div>
               <StatusBadge status={svc.status} />

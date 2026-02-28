@@ -107,7 +107,7 @@ export default function TaskFormPage() {
     }
   }
 
-  if (isEdit && isLoading) return <LoadingScreen />
+  if (isEdit && (isLoading || !eventsData || !usersData)) return <LoadingScreen />
 
   const saving = create.isPending || update.isPending || patch.isPending
   const error = create.error || update.error || patch.error

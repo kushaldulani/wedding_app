@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Trash2 } from 'lucide-react'
 import PageHeader from '../../components/PageHeader'
+import LoadingScreen from '../../components/LoadingScreen'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import { useBudgetCategories, useCreateExpense, useUpdateExpense, useDeleteExpense } from '../../hooks/useBudget'
 import { useVendors } from '../../hooks/useVendors'
@@ -91,6 +92,8 @@ export default function ExpenseFormPage() {
       create.mutate(payload, { onSuccess: () => navigate('/budget') })
     }
   }
+
+  if (isEdit && (!expense || !categories || !vendorsData || !eventsData || !usersData)) return <LoadingScreen />
 
   const saving = create.isPending || update.isPending
   const error = create.error || update.error

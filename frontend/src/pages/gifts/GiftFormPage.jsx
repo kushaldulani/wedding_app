@@ -69,7 +69,7 @@ export default function GiftFormPage() {
     }
   }
 
-  if (isEdit && isLoading) return <LoadingScreen />
+  if (isEdit && (isLoading || !guestsData || !eventsData || !giftTypes)) return <LoadingScreen />
   const saving = create.isPending || update.isPending
   const error = create.error || update.error
 
