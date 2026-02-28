@@ -65,6 +65,7 @@ class GuestResponse(BaseResponseSchema):
 
 class GuestSummaryResponse(BaseSchema):
     total_guests: int
+    total_persons: int
     by_side: dict[str, int]
     by_dietary_preference: dict[str, int]
     by_age_group: dict[str, int]

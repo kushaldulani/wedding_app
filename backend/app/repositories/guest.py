@@ -97,8 +97,14 @@ class GuestRepository(BaseRepository[Guest]):
         fg_count = fg_r.scalar() or 0
 
         total = sum(by_side.values())
+
+        persons_q = select(func.coalesce(func.sum(Guest.number_of_persons), 0)).where(base)
+        persons_r = await self.db.execute(persons_q)
+        total_persons = persons_r.scalar() or 0
+
         return {
             "total_guests": total,
+            "total_persons": total_persons,
             "by_side": by_side,
             "by_dietary_preference": by_diet,
             "by_age_group": by_age,

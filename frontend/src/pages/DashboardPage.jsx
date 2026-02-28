@@ -101,7 +101,7 @@ export default function DashboardPage() {
   const getStatSub = (key) => {
     switch (key) {
       case 'events': return eventsSummary?.by_status?.upcoming ? `${eventsSummary.by_status.upcoming} upcoming` : undefined
-      case 'guests': return guestsSummary?.vip_count ? `${guestsSummary.vip_count} VIP` : undefined
+      case 'guests': return guestsSummary?.total_persons ? `${guestsSummary.total_persons} total people` : undefined
       case 'tasks': return tasksSummary?.overdue ? `${tasksSummary.overdue} overdue` : undefined
       case 'budget': return budgetOverview?.total_estimated ? `of ${formatCurrency(budgetOverview.total_estimated)}` : undefined
       default: return undefined
