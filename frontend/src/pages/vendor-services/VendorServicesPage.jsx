@@ -7,6 +7,7 @@ import LoadingScreen from '../../components/LoadingScreen'
 import EmptyState from '../../components/EmptyState'
 import StatusBadge from '../../components/StatusBadge'
 import { useVendorServices } from '../../hooks/useVendorServices'
+import { useEvents } from '../../hooks/useEvents'
 import { exportVendorServices } from '../../api/vendor-services'
 import { cn, downloadBlob, formatDate, formatCurrency } from '../../lib/utils'
 import { VENDOR_SERVICE_STATUSES } from '../../lib/constants'
@@ -14,10 +15,15 @@ import { VENDOR_SERVICE_STATUSES } from '../../lib/constants'
 export default function VendorServicesPage() {
   const navigate = useNavigate()
   const [statusFilter, setStatusFilter] = useState('')
+  const [eventFilter, setEventFilter] = useState('')
   const [exporting, setExporting] = useState(false)
+
+  const { data: eventsData } = useEvents({ page_size: 100 })
+  const events = eventsData?.items || eventsData || []
 
   const params = {}
   if (statusFilter) params.status = statusFilter
+  if (eventFilter) params.event_id = eventFilter
 
   const { data, isLoading } = useVendorServices(params)
 
@@ -49,28 +55,40 @@ export default function VendorServicesPage() {
         }
       />
 
-      <div className="px-4 md:px-6 lg:px-8 py-3 flex gap-2 overflow-x-auto">
-        <button
-          onClick={() => setStatusFilter('')}
-          className={cn(
-            'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap',
-            statusFilter === '' ? 'bg-primary-600 text-white' : 'bg-slate-100 text-slate-600'
-          )}
-        >
-          All
-        </button>
-        {VENDOR_SERVICE_STATUSES.map((s) => (
+      <div className="px-4 md:px-6 lg:px-8 py-3 flex items-center gap-3">
+        <div className="flex gap-2 overflow-x-auto flex-1">
           <button
-            key={s}
-            onClick={() => setStatusFilter(s)}
+            onClick={() => setStatusFilter('')}
             className={cn(
-              'px-3 py-1.5 rounded-full text-xs font-medium capitalize whitespace-nowrap',
-              statusFilter === s ? 'bg-primary-600 text-white' : 'bg-slate-100 text-slate-600'
+              'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap',
+              statusFilter === '' ? 'bg-primary-600 text-white' : 'bg-slate-100 text-slate-600'
             )}
           >
-            {s.replace(/_/g, ' ')}
+            All
           </button>
-        ))}
+          {VENDOR_SERVICE_STATUSES.map((s) => (
+            <button
+              key={s}
+              onClick={() => setStatusFilter(s)}
+              className={cn(
+                'px-3 py-1.5 rounded-full text-xs font-medium capitalize whitespace-nowrap',
+                statusFilter === s ? 'bg-primary-600 text-white' : 'bg-slate-100 text-slate-600'
+              )}
+            >
+              {s.replace(/_/g, ' ')}
+            </button>
+          ))}
+        </div>
+        <select
+          value={eventFilter}
+          onChange={(e) => setEventFilter(e.target.value)}
+          className="px-3 py-1.5 rounded-full text-xs font-medium border border-slate-200 bg-white text-slate-600 focus:outline-none focus:ring-2 focus:ring-primary-500 min-w-[130px]"
+        >
+          <option value="">All Events</option>
+          {events.map((e) => (
+            <option key={e.id} value={e.id}>{e.name}</option>
+          ))}
+        </select>
       </div>
 
       {isLoading ? (
