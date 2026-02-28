@@ -18,11 +18,6 @@
   touch-action: manipulation;
 }
 
-html {
-  /* White background ensures bottom safe area behind nav looks clean */
-  background-color: #ffffff;
-}
-
 html, body, #root {
   height: 100%;
   overscroll-behavior: none;
@@ -31,7 +26,7 @@ html, body, #root {
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f8fafc;
+  background-color: #ffffff;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
 }
