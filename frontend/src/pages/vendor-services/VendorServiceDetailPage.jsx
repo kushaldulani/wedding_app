@@ -5,7 +5,9 @@ import PageHeader from '../../components/PageHeader'
 import LoadingScreen from '../../components/LoadingScreen'
 import ConfirmDialog from '../../components/ConfirmDialog'
 import StatusBadge from '../../components/StatusBadge'
+import AttachmentList from '../../components/AttachmentList'
 import { useVendorService, useDeleteVendorService } from '../../hooks/useVendorServices'
+import { useAttachments, useDeleteAttachment } from '../../hooks/useMediaAttachments'
 import { useVendor } from '../../hooks/useVendors'
 import { useEvent } from '../../hooks/useEvents'
 import { formatDate, formatTime, formatCurrency } from '../../lib/utils'
@@ -27,6 +29,8 @@ export default function VendorServiceDetailPage() {
   const navigate = useNavigate()
   const { data: svc, isLoading } = useVendorService(id)
   const deleteService = useDeleteVendorService()
+  const { data: attachments } = useAttachments('vendor_service', id)
+  const deleteAttachment = useDeleteAttachment('vendor_service', id)
   const [showDelete, setShowDelete] = useState(false)
 
   const { data: vendor } = useVendor(svc?.vendor_id)
@@ -79,6 +83,12 @@ export default function VendorServiceDetailPage() {
             <p className="text-sm text-amber-800">{svc.notes}</p>
           </div>
         )}
+
+        <AttachmentList
+          attachments={attachments}
+          onDelete={(attId) => deleteAttachment.mutate(attId)}
+          deleting={deleteAttachment.isPending}
+        />
       </div>
 
       <ConfirmDialog

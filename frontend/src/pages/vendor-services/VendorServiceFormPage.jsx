@@ -5,7 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import PageHeader from '../../components/PageHeader'
 import LoadingScreen from '../../components/LoadingScreen'
+import FileDropzone from '../../components/FileDropzone'
+import AttachmentList from '../../components/AttachmentList'
 import { useVendorService, useCreateVendorService, useUpdateVendorService } from '../../hooks/useVendorServices'
+import { useAttachments, useUploadAttachments, useDeleteAttachment } from '../../hooks/useMediaAttachments'
 import { useVendors } from '../../hooks/useVendors'
 import { useEvents } from '../../hooks/useEvents'
 import { VENDOR_SERVICE_STATUSES } from '../../lib/constants'
@@ -33,6 +36,9 @@ export default function VendorServiceFormPage() {
   const { data: eventsData } = useEvents({ page_size: 100 })
   const createService = useCreateVendorService()
   const updateService = useUpdateVendorService()
+  const { data: attachments } = useAttachments('vendor_service', id)
+  const uploadAttachments = useUploadAttachments('vendor_service', id)
+  const deleteAttachment = useDeleteAttachment('vendor_service', id)
 
   const vendors = vendorsData?.items || vendorsData || []
   const events = eventsData?.items || eventsData || []
@@ -175,6 +181,21 @@ export default function VendorServiceFormPage() {
           <textarea {...register('notes')} rows={2} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none" />
         </div>
       </form>
+
+      {isEdit && (
+        <div className="px-4 md:px-6 lg:px-8 py-4 space-y-4 max-w-2xl">
+          <h3 className="text-sm font-medium text-slate-700">Attachments</h3>
+          <FileDropzone
+            onUpload={(files) => uploadAttachments.mutateAsync(files)}
+            uploading={uploadAttachments.isPending}
+          />
+          <AttachmentList
+            attachments={attachments}
+            onDelete={(attId) => deleteAttachment.mutate(attId)}
+            deleting={deleteAttachment.isPending}
+          />
+        </div>
+      )}
     </div>
   )
 }

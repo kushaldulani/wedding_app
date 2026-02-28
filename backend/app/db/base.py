@@ -20,3 +20,4 @@ from app.models.budget import BudgetCategory, Expense
 from app.models.task import Task
 from app.models.gift import Gift
 from app.models.vendor_service import VendorServiceItem
+from app.models.media_attachment import MediaAttachment

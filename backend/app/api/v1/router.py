@@ -17,6 +17,7 @@ from app.api.v1.endpoints import (
     tasks,
     gifts,
     vendor_services,
+    media_attachments,
 )
 
 router = APIRouter(prefix="/api/v1")
@@ -37,3 +38,4 @@ router.include_router(budget.router)
 router.include_router(tasks.router)
 router.include_router(gifts.router)
 router.include_router(vendor_services.router)
+router.include_router(media_attachments.router)

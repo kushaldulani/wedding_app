@@ -40,6 +40,10 @@ htmlcov/
 # Backups
 backups/
 
+# Uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
 # Misc
 *.log
 .DS_Store

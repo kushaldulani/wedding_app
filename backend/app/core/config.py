@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     groq_api_key: str = ""
 
+    # File uploads
+    upload_dir: str = "uploads"
+    max_file_size_mb: int = 10
+
     # First Admin
     first_admin_email: str = "admin@example.com"
     first_admin_password: str = "changeme123"

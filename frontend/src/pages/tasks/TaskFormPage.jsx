@@ -5,8 +5,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import PageHeader from '../../components/PageHeader'
 import LoadingScreen from '../../components/LoadingScreen'
+import FileDropzone from '../../components/FileDropzone'
+import AttachmentList from '../../components/AttachmentList'
 import useAuthStore from '../../stores/authStore'
 import { useTask, useCreateTask, useUpdateTask, usePatchTask } from '../../hooks/useTasks'
+import { useAttachments, useUploadAttachments, useDeleteAttachment } from '../../hooks/useMediaAttachments'
 import { useEvents } from '../../hooks/useEvents'
 import { useUsers } from '../../hooks/useUsers'
 import { TASK_PRIORITIES, TASK_STATUSES } from '../../lib/constants'
@@ -52,6 +55,9 @@ export default function TaskFormPage() {
   const create = useCreateTask()
   const update = useUpdateTask()
   const patch = usePatchTask()
+  const { data: attachments } = useAttachments('task', id)
+  const uploadAttachments = useUploadAttachments('task', id)
+  const deleteAttachment = useDeleteAttachment('task', id)
 
   const schema = isAdmin ? adminSchema : userSchema
 
@@ -231,6 +237,21 @@ export default function TaskFormPage() {
           </div>
         )}
       </form>
+
+      {isEdit && (
+        <div className="px-4 md:px-6 lg:px-8 py-4 space-y-4 max-w-2xl">
+          <h3 className="text-sm font-medium text-slate-700">Attachments</h3>
+          <FileDropzone
+            onUpload={(files) => uploadAttachments.mutateAsync(files)}
+            uploading={uploadAttachments.isPending}
+          />
+          <AttachmentList
+            attachments={attachments}
+            onDelete={(attId) => deleteAttachment.mutate(attId)}
+            deleting={deleteAttachment.isPending}
+          />
+        </div>
+      )}
     </div>
   )
 }
