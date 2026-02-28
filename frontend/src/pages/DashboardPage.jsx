@@ -11,6 +11,7 @@ import {
   Shield,
   Settings,
   Heart,
+  Wrench,
 } from 'lucide-react'
 import useAuthStore from '../stores/authStore'
 import { useEventsSummary } from '../hooks/useEvents'
@@ -62,6 +63,7 @@ const allQuickAccess = [
   { icon: Users, label: 'Guests', to: '/guests', color: 'bg-purple-100 text-purple-600', roles: ['admin', 'manager', 'user'] },
   { icon: CheckSquare, label: 'Tasks', to: '/tasks', color: 'bg-amber-100 text-amber-600', roles: ['admin', 'manager', 'user', 'guest'] },
   { icon: Store, label: 'Vendors', to: '/vendors', color: 'bg-indigo-100 text-indigo-600', roles: ['admin', 'manager', 'user'] },
+  { icon: Wrench, label: 'Services', to: '/vendor-services', color: 'bg-orange-100 text-orange-600', roles: ['admin', 'manager', 'user'] },
   { icon: Wallet, label: 'Budget', to: '/budget', color: 'bg-green-100 text-green-600', roles: ['admin', 'manager'] },
   { icon: Mail, label: 'Invitations', to: '/invitations', color: 'bg-sky-100 text-sky-600', roles: ['admin', 'manager', 'user', 'guest'] },
   { icon: Gift, label: 'Gifts', to: '/gifts', color: 'bg-pink-100 text-pink-600', roles: ['admin', 'manager'] },
@@ -91,7 +93,7 @@ export default function DashboardPage() {
   const getStatValue = (key) => {
     switch (key) {
       case 'events': return eventsSummary?.total_events
-      case 'guests': return guestsSummary?.total_guests
+      case 'guests': return guestsSummary?.total_persons ?? guestsSummary?.total_guests
       case 'tasks': return tasksSummary?.pending
       case 'budget': return budgetOverview ? formatCurrency(budgetOverview.total_spent) : undefined
       default: return undefined
@@ -101,7 +103,7 @@ export default function DashboardPage() {
   const getStatSub = (key) => {
     switch (key) {
       case 'events': return eventsSummary?.by_status?.upcoming ? `${eventsSummary.by_status.upcoming} upcoming` : undefined
-      case 'guests': return guestsSummary?.total_persons ? `${guestsSummary.total_persons} total people` : undefined
+      case 'guests': return guestsSummary?.total_guests ? `${guestsSummary.total_guests} guests` : undefined
       case 'tasks': return tasksSummary?.overdue ? `${tasksSummary.overdue} overdue` : undefined
       case 'budget': return budgetOverview?.total_estimated ? `of ${formatCurrency(budgetOverview.total_estimated)}` : undefined
       default: return undefined
