@@ -88,7 +88,7 @@ export default function TaskFormPage() {
       if (isEdit) {
         update.mutate({ id, data: payload }, { onSuccess: () => navigate('/tasks') })
       } else {
-        create.mutate(payload, { onSuccess: () => navigate('/tasks') })
+        create.mutate(payload, { onSuccess: (res) => navigate(`/tasks/${res.id}/edit`) })
       }
     } else {
       if (isEdit) {
@@ -108,7 +108,7 @@ export default function TaskFormPage() {
           status: data.status,
           due_date: data.due_date || null,
         }
-        create.mutate(payload, { onSuccess: () => navigate('/tasks') })
+        create.mutate(payload, { onSuccess: (res) => navigate(`/tasks/${res.id}/edit`) })
       }
     }
   }

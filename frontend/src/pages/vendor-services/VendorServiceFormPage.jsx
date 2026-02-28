@@ -86,7 +86,7 @@ export default function VendorServiceFormPage() {
     if (isEdit) {
       updateService.mutate({ id, data: payload }, { onSuccess: () => navigate(`/vendor-services/${id}`) })
     } else {
-      createService.mutate(payload, { onSuccess: () => navigate('/vendor-services') })
+      createService.mutate(payload, { onSuccess: (res) => navigate(`/vendor-services/${res.id}/edit`) })
     }
   }
 
